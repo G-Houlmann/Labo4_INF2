@@ -2,63 +2,72 @@
 #define matriceIMPL_H
 #include "matrice.h"
 
-Matrice<T>::Matrice<T>() {
+template <typename T>
+matrice<T>::matrice() {
     l = 0;
     c = 0;
+    data(l, std::vector<T> (c));
 }
 
-Matrice<T>::Matrice<T>(unsigned l) {
+template <typename T>
+matrice<T>::matrice(unsigned l) {
     this->l = l;
     this->c = 0;
     data = std::vector<std::vector<T>>(l);
 }
 
-Matrice<T>::Matrice<T>(unsigned l, unsigned c) {
+template <typename T>
+matrice<T>::matrice(unsigned l, unsigned c) {
     this->l = l;
     this->c = c;
-    data = std::vector<std::vector<T>(c)>(l);
+    data(l, std::vector<T> (c));
 }
 
 template <typename T>
-const vecteur<T>& Matrice<T>::at(unsigned l) const {
+const vecteur<T>& matrice<T>::at(unsigned l) const {
     return data.at(l);
 }
 
 template <typename T>
-vecteur<T>& Matrice<T>::at(unsigned l) {
+vecteur<T>& matrice<T>::at(unsigned l) {
     return data.at(l);
 }
 
 template <typename T>
-size_t Matrice<T>::size() {
+size_t matrice<T>::size() const {
     return l;
 }
 
 template <typename T>
-T Matrice<T>::resize(unsigned l) {
+size_t matrice<T>::sizeC() const {
+    return c;
+}
+
+template <typename T>
+void matrice<T>::resize(unsigned l) {
     data.resize(l);
     this->l = l;
 }
 
 template <typename T>
-T Matrice<T>::resize(unsigned l, unsigned c) {
+void matrice<T>::resize(unsigned l, unsigned c) {
     data.resize(l).resize(c);
     this->l = l;
     this->c = c;
 }
 
 template <typename T>
-bool Matrice<T>::estVide() const {
+bool matrice<T>::estVide() const {
     return !(l || c);
 }
 
 template <typename T>
-bool Matrice<T>::estCarree() const {
+bool matrice<T>::estCarree() const {
     return (l == c);
 }
 
 template <typename T>
-bool Matrice<T>::estReguliere() const {
+bool matrice<T>::estReguliere() const {
     for (unsigned i = 1; i < l; i++) {
         if (data.at(i),size() != data.at(i - 1).size())
             return false;
@@ -67,12 +76,12 @@ bool Matrice<T>::estReguliere() const {
 }
 
 template <typename T>
-vecteur<T> Matrice<T>::sommeLigne() const {
+vecteur<T> matrice<T>::sommeLigne() const {
     vecteur<T> output;
     for (unsigned i = 0; i < l; i++) {
         T somme = 0;
         for (unsigned j = 0; j < c; j++) {
-            somme += data.at(i).at(j);
+            somme += this->at(i).at(j);
         }
         output.push_back(somme);
     }
@@ -80,12 +89,12 @@ vecteur<T> Matrice<T>::sommeLigne() const {
 }
 
 template <typename T>
-vecteur<T> Matrice<T>::sommeColonne() const {
+vecteur<T> matrice<T>::sommeColonne() const {
     vecteur<T> output;
-    for (unsigned i = 0; i < c; i++) {
+    for (unsigned i = 0; i < this->c; i++) {
         T somme = 0;
-        for (unsigned j = 0; j < l; j++) {
-            somme += data.at(i).at(j);
+        for (unsigned j = 0; j < this->l; j++) {
+            somme += this->at(i).at(j);
         }
         output.push_back(somme);
     }
@@ -93,35 +102,37 @@ vecteur<T> Matrice<T>::sommeColonne() const {
 }
 
 template <typename T>
-T Matrice<T>::sommeDiagonaleGD() const {
+T matrice<T>::sommeDiagonaleGD() const {
     T somme = 0;
     for (unsigned i = 0; i < l; i++) {
         for (unsigned j = 0; i < c; j++) {
             if (i == j)
-                somme += data.at(i).at(j);
+                somme += this->at(i).at(j);
         }
     }
     return somme;
 }
 
 template <typename T>
-T Matrice<T>::sommeDiagonaleDG() const {
+T matrice<T>::sommeDiagonaleDG() const {
     T somme = 0;
     for (int i = l - 1; i >= 0; i--) {
         for (int j = c - 1; j >= 0; j--) {
-            somme += data.at(i).at(j);
+            somme += this->at(i).at(j);
         }
     }
     return somme;
 }
 
-template <typename T>
-ostream& Matrice<T>::opreator<< <T>(ostream& os; const Matrice<T>& m) {
+/*template <typename T>
+std::ostream& operator<< <T>(std::ostream& os, const matrice<T>& m) {
+    size_t l = m.size();
+    size_t c = m.sizeC();
     os << "[";
     for (unsigned i = 0; i < l; i++) {
         os << "[";
-        for unsigned j = 0; j < c; j++) {
-            os << data.at(i).at(j);
+        for (unsigned j = 0; j < c; j++) {
+            os << m.at(i).at(j);
             if (j == c - 1)
                 os << ", ";
         }
@@ -131,10 +142,10 @@ ostream& Matrice<T>::opreator<< <T>(ostream& os; const Matrice<T>& m) {
     }
     os << "]";
     return os;
-}
+}*/
 
-template <typename TY
-Matrice<T> Matrice<T>::operator*(int s) const {
+template <typename T>
+matrice<T> matrice<T>::operator*(int s) const {
     for (unsigned i = 0; i < l; i++) {
         for (unsigned j = 0; j < c; j++) {
             s * data.at(i).at(j);
@@ -142,9 +153,9 @@ Matrice<T> Matrice<T>::operator*(int s) const {
     }
 }
 
-template <typenmae T>
-Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {
-    Matrice<T> result = m;
+template <typename T>
+matrice<T> matrice<T>::operator*(matrice<T> m) const {
+    matrice<T> result = m;
     if (l == m.size()) {
         for (unsigned i = 0; i < l; i++) {
             for (unsigned j = 0; j < c; j++) {
@@ -156,8 +167,8 @@ Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {
 }
 
 template <typename T>
-Matrice<T> Matrice<T>::operator+(Matrice<T> m) const {
-    Matrice<T> result = m;
+matrice<T> matrice<T>::operator+(matrice<T> m) const {
+    matrice<T> result = m;
     if (l == m.size()) {
         for (unsigned i = 0; i < l; i++) {
             for (unsigned j = 0; j < c; j++) {
