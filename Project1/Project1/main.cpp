@@ -6,11 +6,13 @@ using namespace std;
 int main() {
 	vector<double> v = { 1.1, 1.2, 3.3 };
 	vecteur<double> vect(v);
+	vecteur<double> vect2(v);
 
-	double ui = vect.at(0);
+	vect.at(2) *= 2;
+	vect.resize(2);
+	//vect.at(3) = 2;
 
-	ui = 54;
-	cout << vect << endl;
+	cout << vect<< endl;
 
 
 
