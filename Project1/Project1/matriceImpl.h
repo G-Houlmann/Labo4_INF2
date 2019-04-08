@@ -2,13 +2,22 @@
 #define matriceIMPL_H
 #include "matrice.h"
 
-template <typename T>
-T Matrice<T>::at(unsigned l) const {
+Matrice<T>::Matrice<T>() {
     
 }
 
 template <typename T>
-T Matrice<T>::size() {
+const vecteur<T>& Matrice<T>::at(unsigned l) const {
+    return data.at(l);
+}
+
+template <typename T>
+vecteur<T>& Matrice<T>::at(unsigned l) {
+    return data.at(l);
+}
+
+template <typename T>
+size_t Matrice<T>::size() {
     return l;
 }
 
@@ -30,7 +39,7 @@ bool Matrice<T>::estCarree() const {
 template <typename T>
 bool Matrice<T>::estReguliere() const {
     for (unsigned i = 1; i < l; i++) {
-        if (data.at(i) != data.at(i - 1))
+        if (data.at(i),size() != data.at(i - 1).size())
             return false;
     }
     return true;
@@ -86,7 +95,7 @@ T Matrice<T>::sommeDiagonaleDG() const {
 }
 
 template <typename T>
-ostream& Matrice<T>::opreator<<(ostream& os; const Matrice& m) {
+ostream& Matrice<T>::opreator<< <T>(ostream& os; const Matrice<T>& m) {
     os << "[";
     for (unsigned i = 0; i < l; i++) {
         os << "[";
@@ -101,6 +110,31 @@ ostream& Matrice<T>::opreator<<(ostream& os; const Matrice& m) {
     }
     os << "]";
     return os;
+}
+
+template <typename TY
+Matrice<T> Matrice<T>::operator*(int s) const {
+    for (unsigned i = 0; i < l; i++) {
+        for (unsigned j = 0; j < c; j++) {
+            s * data.at(i).at(j);
+        }
+    }
+}
+
+template <typenmae T>
+Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {}
+
+template <typename T>
+Matrice<T> Matrice<T>::operator+(Matrice<T> m) const {
+    Matrice<T> result = m;
+    if (l == m.size()) {
+        for (unsigned i = 0; i < l; i++) {
+            for (unsigned j = 0; j < c; j++) {
+                result.at(i).at(j) = this->at(i).at(j) + m.at(i).at(j);
+            }
+        }
+    }
+    return result;
 }
 
 #endif // !matriceIMPL_H
