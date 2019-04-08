@@ -3,7 +3,20 @@
 #include "matrice.h"
 
 Matrice<T>::Matrice<T>() {
-    
+    l = 0;
+    c = 0;
+}
+
+Matrice<T>::Matrice<T>(unsigned l) {
+    this->l = l;
+    this->c = 0;
+    data = std::vector<std::vector<T>>(l);
+}
+
+Matrice<T>::Matrice<T>(unsigned l, unsigned c) {
+    this->l = l;
+    this->c = c;
+    data = std::vector<std::vector<T>(c)>(l);
 }
 
 template <typename T>
@@ -23,7 +36,15 @@ size_t Matrice<T>::size() {
 
 template <typename T>
 T Matrice<T>::resize(unsigned l) {
-    
+    data.resize(l);
+    this->l = l;
+}
+
+template <typename T>
+T Matrice<T>::resize(unsigned l, unsigned c) {
+    data.resize(l).resize(c);
+    this->l = l;
+    this->c = c;
 }
 
 template <typename T>
@@ -122,7 +143,17 @@ Matrice<T> Matrice<T>::operator*(int s) const {
 }
 
 template <typenmae T>
-Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {}
+Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {
+    Matrice<T> result = m;
+    if (l == m.size()) {
+        for (unsigned i = 0; i < l; i++) {
+            for (unsigned j = 0; j < c; j++) {
+                result.at(i).at(j) = this->at(i).at(j) * m.at(i).at(j);
+            }
+        }
+    }
+    return result;
+}
 
 template <typename T>
 Matrice<T> Matrice<T>::operator+(Matrice<T> m) const {

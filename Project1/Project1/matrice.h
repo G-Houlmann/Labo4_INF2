@@ -7,8 +7,9 @@ class Matrice {
     friend std::ostream& operator<< <T>(ostream& os, const Matrice<T>& m);
 
     public:
-        Matrice<T>(unsigned l) : l(l), c(0) {}
-        Matrice<T>(unsigned l, unsigned c) : l(l), c(c) {}
+        Matrice<T>();
+        Matrice<T>(unsigned l) {};
+        Matrice<T>(unsigned l, unsigned c) {};
         Matrice<T> operator*(int s) const;
         Matrice<T> operator*(Matrice<T> m) const;
         Matrice<T> operator+(Matrice<T> m) const;
