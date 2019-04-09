@@ -24,6 +24,7 @@ public:
 	//Constructeurs
 	vecteur<T>(unsigned n);
 	vecteur<T>(std::vector<T>);
+	vecteur<T>(size_t nbElem, T elem);
 
 	//Methodes
 	T& at(unsigned n);
@@ -64,6 +65,13 @@ template<typename T>
 vecteur<T>::vecteur(std::vector<T> v) {
 	this->data = v;
 	this->taille = v.size();
+}
+
+template<typename T>
+vecteur<T>::vecteur(size_t nbElem, T elem) {
+    std::vector<T> v(nbElem, elem);
+    data = v;
+    taille = nbElem;
 }
 
 template<typename T>
@@ -120,7 +128,7 @@ vecteur<T> vecteur<T>::operator*(int n) const{
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
+//Exceptions : index out of range si 2 vects pas de mï¿½me taille
 vecteur<T> vecteur<T>::operator*(const vecteur& v) const{
 	if (this->size() != v.size())
 		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille");
@@ -132,7 +140,7 @@ vecteur<T> vecteur<T>::operator*(const vecteur& v) const{
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
+//Exceptions : index out of range si 2 vects pas de mï¿½me taille
 vecteur<T> vecteur<T>::operator+(const vecteur& v) const{
 	if (this->size() != v.size())
 		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille");
@@ -144,7 +152,7 @@ vecteur<T> vecteur<T>::operator+(const vecteur& v) const{
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
+//Exceptions : index out of range si 2 vects pas de mï¿½me taille
 vecteur<T> vecteur<T>::operator-(const vecteur& v) const{
 	if (this->size() != v.size())
 		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille. Fichier: __FILE__ ; Fonction : __func__ ; Ligne: __LINE__.");

@@ -53,7 +53,7 @@ class matrice {
     private:
         unsigned l;
         unsigned c;
-        vecteur<vecteur <T>> data;
+        vecteur<vecteur <T>> data = vecteur<vecteur<T>> (0, vecteur<T>(0));
 };
 
 

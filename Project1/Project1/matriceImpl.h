@@ -6,30 +6,41 @@ template <typename T>
 matrice<T>::matrice() {
     l = 0;
     c = 0;
-    data(l, std::vector<T> (c));
+    // data(l, std::vector<T> (c));
+    vecteur<vecteur<T>> matrice(l, vecteur<T>(c));
+    data = matrice;
 }
 
 template <typename T>
 matrice<T>::matrice(unsigned l) {
     this->l = l;
     this->c = 0;
-    data = std::vector<std::vector<T>>(l);
+    // data = std::vector<std::vector<T>>(l);
+    vecteur<vecteur<T>> matrice(l);
+    data = matrice;
 }
 
 template <typename T>
 matrice<T>::matrice(unsigned l, unsigned c) {
     this->l = l;
     this->c = c;
-    data(l, std::vector<T> (c));
+    // data(l, std::vector<T> (c));
+    vecteur<T> vect(c);
+    vecteur<vecteur<T>> matrice(l, vect);
+    data = matrice;
 }
 
 template <typename T>
 const vecteur<T>& matrice<T>::at(unsigned l) const {
+    if (l > this->l)
+        throw index_hors_limite("Accès hors limite de la matrice.");
     return data.at(l);
 }
 
 template <typename T>
 vecteur<T>& matrice<T>::at(unsigned l) {
+    if (l > this->l)
+        throw index_hors_limite("Accès hors limite de la matrice.");
     return data.at(l);
 }
 
@@ -45,13 +56,17 @@ size_t matrice<T>::sizeC() const {
 
 template <typename T>
 void matrice<T>::resize(unsigned l) {
-    data.resize(l);
-    this->l = l;
+    try {
+        this->resize(l);
+        this->l = l;
+    } catch (...) {
+        throw index_hors_limite("truc");
+    }
 }
 
 template <typename T>
 void matrice<T>::resize(unsigned l, unsigned c) {
-    data.resize(l).resize(c);
+    this->resize(l).resize(c);
     this->l = l;
     this->c = c;
 }
@@ -69,7 +84,7 @@ bool matrice<T>::estCarree() const {
 template <typename T>
 bool matrice<T>::estReguliere() const {
     for (unsigned i = 1; i < l; i++) {
-        if (data.at(i),size() != data.at(i - 1).size())
+        if (this->at(i).size() != this->at(i - 1).size())
             return false;
     }
     return true;
@@ -148,7 +163,7 @@ template <typename T>
 matrice<T> matrice<T>::operator*(int s) const {
     for (unsigned i = 0; i < l; i++) {
         for (unsigned j = 0; j < c; j++) {
-            s * data.at(i).at(j);
+            s * this->at(i).at(j);
         }
     }
 }
