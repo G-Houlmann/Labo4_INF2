@@ -1,6 +1,7 @@
 #ifndef matrice_H
 #define matrice_H
 #include "vecteur.h"
+#include <limits>
 
 template <typename T> class matrice;
 
@@ -13,12 +14,10 @@ std::ostream& operator<< (std::ostream& os, const matrice<T>& m) {
         os << "[";
         for (unsigned j = 0; j < c; j++) {
             os << m.at(i).at(j);
-            if (j == c - 1)
-                os << ", ";
+            if(j != c - 1) os << ", ";
         }
         os << "]";
-        if (i == l - 1)
-            os << ", ";
+        if (i != l - 1) os << ", ";
     }
     os << "]";
     return os;

@@ -22,6 +22,18 @@ public:
 	explicit taille_vecteurs_incompatibles(const char* s) : std::logic_error(s) {}
 };
 
+class matrice_taille_incompatible : public std::logic_error {
+public:
+	explicit matrice_taille_incompatible(const std::string& s) : std::logic_error(s) {}
+	explicit matrice_taille_incompatible(const char* s) : std::logic_error(s) {}
+};
+
+class matrice_vide : public std::logic_error {
+public:
+	explicit matrice_vide(const std::string& s) : std::logic_error(s) {}
+	explicit matrice_vide(const char* s) : std::logic_error(s) {}
+};
+
 
 
 
