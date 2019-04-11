@@ -71,12 +71,15 @@ public:
 		: std::logic_error(className + ": " + s) {}
 };
 
+//Exception indiquant une erreur de type bad_alloc lors de l'initialisation
+//d'un vecteur.
 class erreur_allocation : public std::bad_alloc {
 public:
 	explicit erreur_allocation(const std::string& s, const std::string& className)
 		: std::bad_alloc() { message = className + ": " + s; }
 	explicit erreur_allocation(const char* s, const std::string& className)
 		: std::bad_alloc() { message = className + ": " + s; }
+
 	std::string what() {
 		return message;
 	}
