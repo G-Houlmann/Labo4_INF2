@@ -47,7 +47,8 @@ class matrice {
 
 public:
 	/**
-	 * @brief Constructeur de matrice par défaut. Met le nombre de lignes et de colonnes à 0.
+	 * @brief Constructeur de matrice par défaut. Met le nombre de lignes et de 
+	 * colonnes à 0.
 	 */
 	matrice<T>();
 

@@ -32,7 +32,8 @@ matrice<T>::matrice(unsigned l) {
 		data = matrice;
 	}
 	catch (...) {
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 	}
 }
 
@@ -41,18 +42,21 @@ matrice<T>::matrice(unsigned l, unsigned c) {
 	if (l != std::numeric_limits<unsigned>::max())
 		this->l = l;
 	else
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 	if (c != std::numeric_limits<unsigned>::max())
 		this->c = c;
 	else
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 	try {
 		vecteur<T> vect(c);
 		vecteur<vecteur<T>> matrice(l, vect);
 		data = matrice;
 	}
 	catch (...) {
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 	}
 }
 
@@ -87,7 +91,8 @@ void matrice<T>::resize(unsigned l) {
 		this->l = l;
 	}
 	else
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 
 }
 
@@ -103,10 +108,12 @@ void matrice<T>::resize(unsigned l, unsigned c) {
 			this->c = c;
 		}
 		else
-			throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+			throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+			__FILE__);
 	}
 	else
-		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+		__FILE__);
 }
 
 template <typename T>
@@ -141,7 +148,9 @@ vecteur<T> matrice<T>::sommeLigne() const {
 		}
 	}
 	else {
-		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des lignes", __FILE__);
+		throw matrice_vide(
+		"La matrice ne doit pas être vide pour calculer la somme des lignes", 
+		__FILE__);
 	}
 	return output;
 }
@@ -159,7 +168,9 @@ vecteur<T> matrice<T>::sommeColonne() const {
 		}
 	}
 	else {
-		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des colonnes", __FILE__);
+		throw matrice_vide(
+		"La matrice ne doit pas être vide pour calculer la somme des colonnes", 
+		__FILE__);
 	}
 	return output;
 }
@@ -176,7 +187,8 @@ T matrice<T>::sommeDiagonaleGD() const {
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+		throw matrice_taille_incompatible(
+		"La matrice doit être carrée pour calculer sa diagonale", __FILE__);
 	}
 	return somme;
 }
@@ -192,7 +204,8 @@ T matrice<T>::sommeDiagonaleDG() const {
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+		throw matrice_taille_incompatible(
+		"La matrice doit être carrée pour calculer sa diagonale", __FILE__);
 	}
 	return somme;
 }
@@ -217,12 +230,14 @@ matrice<T> matrice<T>::operator*(matrice<T> m) const {
 				}
 			}
 			else {
-				throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+				throw matrice_taille_incompatible(
+				"Taille des matrices incompatibles", __FILE__);
 			}
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+		throw matrice_taille_incompatible(
+		"Taille des matrices incompatibles", __FILE__);
 	}
 	return result;
 }
@@ -238,12 +253,14 @@ matrice<T> matrice<T>::operator+(matrice<T> m) const {
 				}
 			}
 			else {
-				throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+				throw matrice_taille_incompatible(
+				"Taille des matrices incompatibles", __FILE__);
 			}
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+		throw matrice_taille_incompatible(
+		"Taille des matrices incompatibles", __FILE__);
 	}
 	return result;
 }
