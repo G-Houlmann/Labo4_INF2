@@ -211,7 +211,7 @@ T matrice<T>::sommeDiagonaleDG() const {
 }
 
 template <typename T>
-matrice<T> matrice<T>::operator*(int s) const {
+matrice<T> matrice<T>::operator*(T s) const {
 	for (unsigned i = 0; i < l; i++) {
 		for (unsigned j = 0; j < c; j++) {
 			s * this->at(i).at(j);
