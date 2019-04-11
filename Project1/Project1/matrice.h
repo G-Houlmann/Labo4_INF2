@@ -1,3 +1,16 @@
+/*
+ -----------------------------------------------------------------------------------
+ Laboratoire : 04
+ Fichier     : Exceptions.h
+ Auteur(s)   : LAMRANI Soulaymane, HOULMANN Gildas
+ Date        : 11.04.2019
+
+ Remarque(s) :
+
+ Compilateur : MinGW-g++ 6.3.0
+ -----------------------------------------------------------------------------------
+*/
+
 #ifndef matrice_H
 #define matrice_H
 #include "vecteur.h"

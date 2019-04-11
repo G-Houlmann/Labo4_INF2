@@ -1,3 +1,16 @@
+/*
+ -----------------------------------------------------------------------------------
+ Laboratoire : 04
+ Fichier     : Exceptions.h
+ Auteur(s)   : LAMRANI Soulaymane, HOULMANN Gildas
+ Date        : 11.04.2019
+
+ Remarque(s) :
+
+ Compilateur : MinGW-g++ 6.3.0
+ -----------------------------------------------------------------------------------
+*/
+
 #ifndef matriceIMPL_H
 #define matriceIMPL_H
 #include "matrice.h"
@@ -6,7 +19,6 @@ template <typename T>
 matrice<T>::matrice() {
 	l = 0;
 	c = 0;
-	// data(l, std::vector<T> (c));
 	vecteur<vecteur<T>> matrice(l, vecteur<T>(c));
 	data = matrice;
 }
@@ -15,7 +27,6 @@ template <typename T>
 matrice<T>::matrice(unsigned l) {
 	this->l = l;
 	this->c = 0;
-	// data = std::vector<std::vector<T>>(l);
 	try {
 		vecteur<vecteur<T>> matrice(l);
 		data = matrice;
@@ -35,7 +46,6 @@ matrice<T>::matrice(unsigned l, unsigned c) {
 		this->c = c;
 	else
 		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
-	// data(l, std::vector<T> (c));
 	try {
 		vecteur<T> vect(c);
 		vecteur<vecteur<T>> matrice(l, vect);
@@ -49,14 +59,14 @@ matrice<T>::matrice(unsigned l, unsigned c) {
 template <typename T>
 const vecteur<T>& matrice<T>::at(unsigned l) const {
 	if (l >= this->l)
-		throw index_hors_limite("Accès hors limite de la matrice.", __FILE__);
+		throw index_hors_limite("AccÃ¨s hors limite de la matrice.", __FILE__);
 	return data.at(l);
 }
 
 template <typename T>
 vecteur<T>& matrice<T>::at(unsigned l) {
 	if (l >= this->l)
-		throw index_hors_limite("Accès hors limite de la matrice.", __FILE__);
+		throw index_hors_limite("AccÃ¨s hors limite de la matrice.", __FILE__);
 	return data.at(l);
 }
 
@@ -131,7 +141,7 @@ vecteur<T> matrice<T>::sommeLigne() const {
 		}
 	}
 	else {
-		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des lignes", __FILE__);
+		throw matrice_vide("La matrice ne doit pas Ãªtre vide pour calculer la somme des lignes", __FILE__);
 	}
 	return output;
 }
@@ -149,7 +159,7 @@ vecteur<T> matrice<T>::sommeColonne() const {
 		}
 	}
 	else {
-		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des colonnes", __FILE__);
+		throw matrice_vide("La matrice ne doit pas Ãªtre vide pour calculer la somme des colonnes", __FILE__);
 	}
 	return output;
 }
@@ -166,7 +176,7 @@ T matrice<T>::sommeDiagonaleGD() const {
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+		throw matrice_taille_incompatible("La matrice doit Ãªtre carrÃ©e pour calculer sa diagonale", __FILE__);
 	}
 	return somme;
 }
@@ -182,7 +192,7 @@ T matrice<T>::sommeDiagonaleDG() const {
 		}
 	}
 	else {
-		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+		throw matrice_taille_incompatible("La matrice doit Ãªtre carrÃ©e pour calculer sa diagonale", __FILE__);
 	}
 	return somme;
 }
