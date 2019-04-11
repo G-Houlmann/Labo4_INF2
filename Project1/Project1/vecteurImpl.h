@@ -1,20 +1,32 @@
+/*
+ -----------------------------------------------------------------------------------
+ Laboratoire : 04
+ Fichier     : vecteurImpl.h
+ Auteur(s)   : LAMRANI Soulaymane, HOULMANN Gildas
+ Date        : 11.04.2019
+
+ Remarque(s) :
+
+ Compilateur : MinGW-g++ 6.3.0
+ -----------------------------------------------------------------------------------
+ */
+
 #ifndef VECTEURIMPL_H
 #define VECTEURIMPL_H
 
 template<typename T>
-//Exceptions : length error si n trop grand
 vecteur<T>::vecteur(unsigned n) {
 	try {
 		this->data = std::vector<T>(n);
 	}
-	catch (...) {
-		throw taille_trop_haute("La taille de vecteur specifiee est trop haute.", __FILE__);
+	catch (std::length_error) {
+		throw taille_trop_haute("La taille de vecteur specifiee est trop haute.",
+								__FILE__);
 	}
 	this->taille = n;
 }
 
 template<typename T>
-//Exceptions : aucune
 vecteur<T>::vecteur(std::vector<T> v) {
 	this->data = v;
 	this->taille = v.size();
@@ -35,40 +47,38 @@ vecteur<T>::vecteur() {
 }
 
 template<typename T>
-//Exceptions : out of range si n >= taille
 T& vecteur<T>::at(unsigned n) {
-	if (n >= taille) throw index_hors_limite("L'index specifie est trop grand. ", __FILE__);
+	if (n >= taille) throw index_hors_limite("L'index specifie est trop grand.",
+											 __FILE__);
 	return this->data.at(n);
 }
 
 template<typename T>
-//Exceptions : out of range si n >= taille
 const T& vecteur<T>::at(unsigned n) const {
-	if (n >= taille) throw index_hors_limite("L'index specifie est trop grand. ", __FILE__);
+	if (n >= taille) throw index_hors_limite("L'index specifie est trop grand.",
+											 __FILE__);
 	return this->data.at(n);
 }
 
 template<typename T>
-//Exceptions : aucune
 unsigned vecteur<T>::size() const {
 	return this->taille;
 }
 
 template<typename T>
-//Exceptions : length error si n trop grand
 void vecteur<T>::resize(unsigned n) {
 	try {
 		this->data.resize(n);
 	}
-	catch (...) {
-		throw taille_trop_haute("La taille de vecteur specifiee est trop haute. ", __FILE__);
+	catch (std::length_error&) {
+		throw taille_trop_haute("La taille de vecteur specifiee est trop haute.",
+								__FILE__);
 	}
 	this->taille = n;
 }
 
 template<typename T>
-//Exceptions : aucune
-const T& vecteur<T>::somme() const {
+T vecteur<T>::somme() const {
 	T somme = NULL;
 	for (size_t i = 0; i < this->size(); ++i) {
 		somme += this->at(i);
@@ -78,7 +88,6 @@ const T& vecteur<T>::somme() const {
 
 
 template <typename T>
-//Exceptions : aucune
 vecteur<T> vecteur<T>::operator*(int n) const {
 	vecteur<T> tmp(this->size());
 	for (size_t i = 0; i < this->size(); ++i) {
@@ -88,10 +97,10 @@ vecteur<T> vecteur<T>::operator*(int n) const {
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
 vecteur<T> vecteur<T>::operator*(const vecteur& v) const {
 	if (this->size() != v.size())
-		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille. ", __FILE__);
+		throw taille_vecteurs_incompatibles
+			("Les 2 vecteurs n'ont pas la meme taille.", __FILE__);
 	vecteur<T> tmp(this->size());
 	for (size_t i = 0; i < this->size(); ++i) {
 		tmp.at(i) = v.at(i) * this->at(i);
@@ -100,10 +109,10 @@ vecteur<T> vecteur<T>::operator*(const vecteur& v) const {
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
 vecteur<T> vecteur<T>::operator+(const vecteur& v) const {
 	if (this->size() != v.size())
-		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille. ", __FILE__);
+		throw taille_vecteurs_incompatibles
+			("Les 2 vecteurs n'ont pas la meme taille. ", __FILE__);
 	vecteur<T> tmp(this->size());
 	for (size_t i = 0; i < this->size(); ++i) {
 		tmp.at(i) = v.at(i) + this->at(i);
@@ -112,10 +121,10 @@ vecteur<T> vecteur<T>::operator+(const vecteur& v) const {
 }
 
 template <typename T>
-//Exceptions : index out of range si 2 vects pas de même taille
 vecteur<T> vecteur<T>::operator-(const vecteur& v) const {
 	if (this->size() != v.size())
-		throw taille_vecteurs_incompatibles("Les 2 vecteurs n'ont pas la meme taille. ", __FILE__);
+		throw taille_vecteurs_incompatibles
+			("Les 2 vecteurs n'ont pas la meme taille. ", __FILE__);
 	vecteur<T> tmp(this->size());
 	for (size_t i = 0; i < this->size(); ++i) {
 		tmp.at(i) = v.at(i) - this->at(i);
