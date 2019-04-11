@@ -13,7 +13,6 @@
 
 #include "matrice.h"
 
-
 using namespace std;
 
 int main() {
@@ -23,8 +22,20 @@ int main() {
 	vect2.resize(200);
 	matrice<double> m(3, 4);
 	m.resize(5, 12);
+	matrice<double> m2(m);
+	m.resize(0);
+	//cout << vect.at(46) << endl;
+	//vect.at(50) = 12.;
+	//cout << m + m2 << endl;
+	//cout << vect + vect2 << endl;
+	//cout << vect * vect2 << endl;
+	//cout << vect - vect2 << endl;
+	//cout << m.sommeDiagonaleDG() << endl;
+	//cout << m.sommeDiagonaleGD() << endl;*/
+	//m.resize(200000000, 10);
+	//vect2.resize(999999999);
 	
-	cout << m.size() << "   " << m.sizeC() << endl;
+
 
 
 	system("PAUSE");
