@@ -23,20 +23,36 @@ vecteur<T>::vecteur(unsigned n) {
 		throw taille_trop_haute("La taille de vecteur specifiee est trop haute.",
 								__FILE__);
 	}
+	catch (std::bad_alloc) {
+		throw erreur_allocation("Une erreur d'allocation est survenue",
+			__FILE__);
+	}
 	this->taille = n;
 }
 
 template<typename T>
 vecteur<T>::vecteur(std::vector<T> v) {
-	this->data = v;
-	this->taille = v.size();
+	try {
+		this->data = v;
+		this->taille = v.size();
+	}
+	catch (std::bad_alloc) {
+		throw erreur_allocation("Une erreur d'allocation est survenue",
+			__FILE__);
+	}
 }
 
 template<typename T>
 vecteur<T>::vecteur(size_t nbElem, T elem) {
-	std::vector<T> v(nbElem, elem);
-	data = v;
-	taille = nbElem;
+	try {
+		std::vector<T> v(nbElem, elem);
+		data = v;
+		taille = nbElem;
+	}
+	catch (std::bad_alloc) {
+		throw erreur_allocation("Une erreur d'allocation est survenue",
+			__FILE__);
+	}
 }
 
 template<typename T>
@@ -70,9 +86,13 @@ void vecteur<T>::resize(unsigned n) {
 	try {
 		this->data.resize(n);
 	}
-	catch (std::length_error&) {
+	catch (std::length_error) {
 		throw taille_trop_haute("La taille de vecteur specifiee est trop haute.",
 								__FILE__);
+	}
+	catch (std::bad_alloc) {
+		throw erreur_allocation("Une erreur d'allocation est survenue",
+			__FILE__);
 	}
 	this->taille = n;
 }
