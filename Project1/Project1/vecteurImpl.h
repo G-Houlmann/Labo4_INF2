@@ -28,6 +28,13 @@ vecteur<T>::vecteur(size_t nbElem, T elem) {
 }
 
 template<typename T>
+vecteur<T>::vecteur() {
+	std::vector<T> v;
+	data = v;
+	taille = 0;
+}
+
+template<typename T>
 //Exceptions : out of range si n >= taille
 T& vecteur<T>::at(unsigned n) {
 	if (n >= taille) throw index_hors_limite("L'index specifie est trop grand. ", __FILE__);

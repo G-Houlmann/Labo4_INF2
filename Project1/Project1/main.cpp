@@ -11,13 +11,9 @@ int main() {
 	vecteur<double> vect2(v);
 	vect2.resize(5);
 	matrice<double> m(3, 4);
-
-	try {
-		 cout << vect + vect2;
-	}
-	catch (exception e) {
-		cout << e.what();
-	}
+	m.resize(5, 12);
+	
+	cout << m.size() << "   " << m.sizeC() << endl;
 
 
 	system("PAUSE");

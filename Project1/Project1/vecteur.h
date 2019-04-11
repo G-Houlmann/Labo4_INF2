@@ -25,6 +25,7 @@ public:
 	vecteur<T>(unsigned n);
 	vecteur<T>(std::vector<T>);
 	vecteur<T>(size_t nbElem, T elem);
+	vecteur<T>();
 
 	//Methodes
 	T& at(unsigned n);
