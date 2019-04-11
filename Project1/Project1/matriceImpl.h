@@ -19,8 +19,13 @@ template <typename T>
 matrice<T>::matrice() {
 	l = 0;
 	c = 0;
-	vecteur<vecteur<T>> matrice(l, vecteur<T>(c));
-	data = matrice;
+	try {
+    	vecteur<vecteur<T>> matrice(l, vecteur<T>(c));
+    	data = matrice;
+    }
+    catch (std::bad_alloc) {
+        throw erreur_allocation("Une erreur d'allocation est survenue", __FILE__);
+    }
 }
 
 template <typename T>
@@ -31,9 +36,12 @@ matrice<T>::matrice(unsigned l) {
 		vecteur<vecteur<T>> matrice(l);
 		data = matrice;
 	}
-	catch (...) {
+	catch (std::length_error) {
 		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
 		__FILE__);
+	}
+	catch (std::bad_alloc) {
+	    throw erreur_allocation("Une erreur d'allocation est survenue", __FILE__);
 	}
 }
 
@@ -54,7 +62,7 @@ matrice<T>::matrice(unsigned l, unsigned c) {
 		vecteur<vecteur<T>> matrice(l, vect);
 		data = matrice;
 	}
-	catch (...) {
+	catch (std::length_error) {
 		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
 		__FILE__);
 	}
@@ -87,8 +95,14 @@ size_t matrice<T>::sizeC() const {
 template <typename T>
 void matrice<T>::resize(unsigned l) {
 	if (l != std::numeric_limits<unsigned>::max()) {
-		data.resize(l);
-		this->l = l;
+	    try {
+    		data.resize(l);
+    		this->l = l;
+        }
+        catch (std::length_error) {
+    		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+    		__FILE__);
+        }
 	}
 	else
 		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
@@ -99,17 +113,23 @@ void matrice<T>::resize(unsigned l) {
 template <typename T>
 void matrice<T>::resize(unsigned l, unsigned c) {
 	if (l != std::numeric_limits<unsigned>::max()) {
-		data.resize(l);
-		this->l = l;
-		if (c != std::numeric_limits<unsigned>::max()) {
-			for (unsigned i = 0; i < l; i++) {
-				data.at(i).resize(c);
-			}
-			this->c = c;
-		}
-		else
-			throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
-			__FILE__);
+	    try{
+    		data.resize(l);
+    		this->l = l;
+    		if (c != std::numeric_limits<unsigned>::max()) {
+    			for (unsigned i = 0; i < l; i++) {
+    				data.at(i).resize(c);
+    			}
+    			this->c = c;
+    		}
+    		else
+    			throw taille_trop_haute(
+    			"La taille de matrice specifiee est trop haute", __FILE__);
+    	}
+    	catch (std::length_error) {
+    		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
+    		__FILE__);
+    	}
 	}
 	else
 		throw taille_trop_haute("La taille de matrice specifiee est trop haute", 
@@ -149,8 +169,8 @@ vecteur<T> matrice<T>::sommeLigne() const {
 	}
 	else {
 		throw matrice_vide(
-		"La matrice ne doit pas être vide pour calculer la somme des lignes", 
-		__FILE__);
+    		"La matrice ne doit pas être vide pour calculer la somme des lignes", 
+    		__FILE__);
 	}
 	return output;
 }
