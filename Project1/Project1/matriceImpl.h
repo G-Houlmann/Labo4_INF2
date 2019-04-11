@@ -2,170 +2,240 @@
 #define matriceIMPL_H
 #include "matrice.h"
 
-Matrice<T>::Matrice<T>() {
-    l = 0;
-    c = 0;
-}
-
-Matrice<T>::Matrice<T>(unsigned l) {
-    this->l = l;
-    this->c = 0;
-    data = std::vector<std::vector<T>>(l);
-}
-
-Matrice<T>::Matrice<T>(unsigned l, unsigned c) {
-    this->l = l;
-    this->c = c;
-    data = std::vector<std::vector<T>(c)>(l);
+template <typename T>
+matrice<T>::matrice() {
+	l = 0;
+	c = 0;
+	// data(l, std::vector<T> (c));
+	vecteur<vecteur<T>> matrice(l, vecteur<T>(c));
+	data = matrice;
 }
 
 template <typename T>
-const vecteur<T>& Matrice<T>::at(unsigned l) const {
-    return data.at(l);
+matrice<T>::matrice(unsigned l) {
+	this->l = l;
+	this->c = 0;
+	// data = std::vector<std::vector<T>>(l);
+	try {
+		vecteur<vecteur<T>> matrice(l);
+		data = matrice;
+	}
+	catch (...) {
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+	}
 }
 
 template <typename T>
-vecteur<T>& Matrice<T>::at(unsigned l) {
-    return data.at(l);
+matrice<T>::matrice(unsigned l, unsigned c) {
+	if (l != std::numeric_limits<unsigned>::max())
+		this->l = l;
+	else
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+	if (c != std::numeric_limits<unsigned>::max())
+		this->c = c;
+	else
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+	// data(l, std::vector<T> (c));
+	try {
+		vecteur<T> vect(c);
+		vecteur<vecteur<T>> matrice(l, vect);
+		data = matrice;
+	}
+	catch (...) {
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+	}
 }
 
 template <typename T>
-size_t Matrice<T>::size() {
-    return l;
+const vecteur<T>& matrice<T>::at(unsigned l) const {
+	if (l >= this->l)
+		throw index_hors_limite("Accès hors limite de la matrice.", __FILE__);
+	return data.at(l);
 }
 
 template <typename T>
-T Matrice<T>::resize(unsigned l) {
-    data.resize(l);
-    this->l = l;
+vecteur<T>& matrice<T>::at(unsigned l) {
+	if (l >= this->l)
+		throw index_hors_limite("Accès hors limite de la matrice.", __FILE__);
+	return data.at(l);
 }
 
 template <typename T>
-T Matrice<T>::resize(unsigned l, unsigned c) {
-    data.resize(l).resize(c);
-    this->l = l;
-    this->c = c;
+size_t matrice<T>::size() const {
+	return l;
 }
 
 template <typename T>
-bool Matrice<T>::estVide() const {
-    return !(l || c);
+size_t matrice<T>::sizeC() const {
+	return c;
 }
 
 template <typename T>
-bool Matrice<T>::estCarree() const {
-    return (l == c);
+void matrice<T>::resize(unsigned l) {
+	if (l != std::numeric_limits<unsigned>::max()) {
+		data.resize(l);
+		this->l = l;
+	}
+	else
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+
 }
 
 template <typename T>
-bool Matrice<T>::estReguliere() const {
-    for (unsigned i = 1; i < l; i++) {
-        if (data.at(i),size() != data.at(i - 1).size())
-            return false;
-    }
-    return true;
+void matrice<T>::resize(unsigned l, unsigned c) {
+	if (l != std::numeric_limits<unsigned>::max()) {
+		data.resize(l);
+		this->l = l;
+		if (c != std::numeric_limits<unsigned>::max()) {
+			for (unsigned i = 0; i < l; i++) {
+				data.at(i).resize(c);
+			}
+			this->c = c;
+		}
+		else
+			throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
+	}
+	else
+		throw taille_trop_haute("La taille de matrice specifiee est trop haute", __FILE__);
 }
 
 template <typename T>
-vecteur<T> Matrice<T>::sommeLigne() const {
-    vecteur<T> output;
-    for (unsigned i = 0; i < l; i++) {
-        T somme = 0;
-        for (unsigned j = 0; j < c; j++) {
-            somme += data.at(i).at(j);
-        }
-        output.push_back(somme);
-    }
-    return output;
+bool matrice<T>::estVide() const {
+	return !(l || c);
 }
 
 template <typename T>
-vecteur<T> Matrice<T>::sommeColonne() const {
-    vecteur<T> output;
-    for (unsigned i = 0; i < c; i++) {
-        T somme = 0;
-        for (unsigned j = 0; j < l; j++) {
-            somme += data.at(i).at(j);
-        }
-        output.push_back(somme);
-    }
-    return output;
+bool matrice<T>::estCarree() const {
+	return (l == c);
 }
 
 template <typename T>
-T Matrice<T>::sommeDiagonaleGD() const {
-    T somme = 0;
-    for (unsigned i = 0; i < l; i++) {
-        for (unsigned j = 0; i < c; j++) {
-            if (i == j)
-                somme += data.at(i).at(j);
-        }
-    }
-    return somme;
+bool matrice<T>::estReguliere() const {
+	for (unsigned i = 1; i < l; i++) {
+		if (this->at(i).size() != this->at(i - 1).size())
+			return false;
+	}
+	return true;
 }
 
 template <typename T>
-T Matrice<T>::sommeDiagonaleDG() const {
-    T somme = 0;
-    for (int i = l - 1; i >= 0; i--) {
-        for (int j = c - 1; j >= 0; j--) {
-            somme += data.at(i).at(j);
-        }
-    }
-    return somme;
+vecteur<T> matrice<T>::sommeLigne() const {
+	vecteur<T> output(l);
+	if (!this->estVide()) {
+		for (unsigned i = 0; i < l; i++) {
+			T somme = 0;
+			for (unsigned j = 0; j < c; j++) {
+				somme += this->at(i).at(j);
+			}
+			output.at(i) = somme;
+		}
+	}
+	else {
+		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des lignes", __FILE__);
+	}
+	return output;
 }
 
 template <typename T>
-ostream& Matrice<T>::opreator<< <T>(ostream& os; const Matrice<T>& m) {
-    os << "[";
-    for (unsigned i = 0; i < l; i++) {
-        os << "[";
-        for unsigned j = 0; j < c; j++) {
-            os << data.at(i).at(j);
-            if (j == c - 1)
-                os << ", ";
-        }
-        os << "]";
-        if (i == l - 1)
-            os << ", ";
-    }
-    os << "]";
-    return os;
-}
-
-template <typename TY
-Matrice<T> Matrice<T>::operator*(int s) const {
-    for (unsigned i = 0; i < l; i++) {
-        for (unsigned j = 0; j < c; j++) {
-            s * data.at(i).at(j);
-        }
-    }
-}
-
-template <typenmae T>
-Matrice<T> Matrice<T>::operator*(Matrice<T> m) const {
-    Matrice<T> result = m;
-    if (l == m.size()) {
-        for (unsigned i = 0; i < l; i++) {
-            for (unsigned j = 0; j < c; j++) {
-                result.at(i).at(j) = this->at(i).at(j) * m.at(i).at(j);
-            }
-        }
-    }
-    return result;
+vecteur<T> matrice<T>::sommeColonne() const {
+	vecteur<T> output(c);
+	if (!this->estVide()) {
+		for (unsigned i = 0; i < c; i++) {
+			T somme = 0;
+			for (unsigned j = 0; j < l; j++) {
+				somme += this->at(j).at(i);
+			}
+			output.at(i) = somme;
+		}
+	}
+	else {
+		throw matrice_vide("La matrice ne doit pas être vide pour calculer la somme des colonnes", __FILE__);
+	}
+	return output;
 }
 
 template <typename T>
-Matrice<T> Matrice<T>::operator+(Matrice<T> m) const {
-    Matrice<T> result = m;
-    if (l == m.size()) {
-        for (unsigned i = 0; i < l; i++) {
-            for (unsigned j = 0; j < c; j++) {
-                result.at(i).at(j) = this->at(i).at(j) + m.at(i).at(j);
-            }
-        }
-    }
-    return result;
+T matrice<T>::sommeDiagonaleGD() const {
+	T somme = 0;
+	if (this->estCarree() && !this->estVide()) {
+		for (unsigned i = 0; i < l; i++) {
+			for (unsigned j = 0; i < c; j++) {
+				if (i == j)
+					somme += this->at(i).at(j);
+			}
+		}
+	}
+	else {
+		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+	}
+	return somme;
+}
+
+template <typename T>
+T matrice<T>::sommeDiagonaleDG() const {
+	T somme = 0;
+	if (this->estCarree() && !this->estVide()) {
+		for (int i = l - 1; i >= 0; i--) {
+			for (int j = c - 1; j >= 0; j--) {
+				somme += this->at(i).at(j);
+			}
+		}
+	}
+	else {
+		throw matrice_taille_incompatible("La matrice doit être carrée pour calculer sa diagonale", __FILE__);
+	}
+	return somme;
+}
+
+template <typename T>
+matrice<T> matrice<T>::operator*(int s) const {
+	for (unsigned i = 0; i < l; i++) {
+		for (unsigned j = 0; j < c; j++) {
+			s * this->at(i).at(j);
+		}
+	}
+}
+
+template <typename T>
+matrice<T> matrice<T>::operator*(matrice<T> m) const {
+	matrice<T> result = m;
+	if (l == m.size()) {
+		for (unsigned i = 0; i < l; i++) {
+			if (this->at(i).size() == m.at(i).size()) {
+				for (unsigned j = 0; j < c; j++) {
+					result.at(i).at(j) = this->at(i).at(j) * m.at(i).at(j);
+				}
+			}
+			else {
+				throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+			}
+		}
+	}
+	else {
+		throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+	}
+	return result;
+}
+
+template <typename T>
+matrice<T> matrice<T>::operator+(matrice<T> m) const {
+	matrice<T> result = m;
+	if (l == m.size()) {
+		for (unsigned i = 0; i < l; i++) {
+			if (this->at(i).size() == m.at(i).size()) {
+				for (unsigned j = 0; j < c; j++) {
+					result.at(i).at(j) = this->at(i).at(j) + m.at(i).at(j);
+				}
+			}
+			else {
+				throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+			}
+		}
+	}
+	else {
+		throw matrice_taille_incompatible("Taille des matrices incompatibles", __FILE__);
+	}
+	return result;
 }
 
 #endif // !matriceIMPL_H
